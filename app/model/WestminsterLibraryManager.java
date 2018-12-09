@@ -19,14 +19,15 @@ public class WestminsterLibraryManager implements LibraryManager {
 
     }
 
-    public void refresh(){
+    public void liveData(){
 
 
     }
 
-    public List<Integer> spaceLeft(){
+    public List<Integer> libraryCapLeft(){
         return null;
     }
+
     @Override
     public void addLibraryItem(LibraryItem item) {
         

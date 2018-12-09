@@ -1,4 +1,4 @@
-const PROXY_CONFIG = {
+PROXY_CONFIG = {
   "**": {
     "target": "http://localhost:9000",
     "secure": false,
