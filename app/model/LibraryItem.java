@@ -11,6 +11,7 @@ public abstract class LibraryItem {
     private DateTime borrowedDate;
     private Date publishedDate;
     private int currentReaderId;
+    private boolean isBorrowed;
 
     /***
      * 
@@ -21,7 +22,7 @@ public abstract class LibraryItem {
      * @param publishedDate
      * @param currentReaderId
      */
-    public LibraryItem(String isbn, String title, String sector, DateTime borrowedDate, Date publishedDate, int currentReaderId ){
+    public LibraryItem(String isbn, String title, String sector, DateTime borrowedDate, Date publishedDate, int currentReaderId, boolean isBorrowed ){
 
         setIsbn(isbn);
         setTitle(title);
@@ -29,7 +30,22 @@ public abstract class LibraryItem {
         setBorrowedDate(borrowedDate);
         setPublishedDate(publishedDate);
         setCurrentReaderId(currentReaderId);
+        setBorrowed(isBorrowed);
 
+    }
+
+    /**
+     * @return the isBorrowed
+     */
+    public boolean isBorrowed() {
+        return isBorrowed;
+    }
+
+    /**
+     * @param isBorrowed the isBorrowed to set
+     */
+    public void setBorrowed(boolean isBorrowed) {
+        this.isBorrowed = isBorrowed;
     }
 
     /**

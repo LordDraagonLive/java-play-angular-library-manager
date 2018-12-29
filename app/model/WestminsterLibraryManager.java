@@ -6,18 +6,49 @@ import java.util.List;
  */
 public class WestminsterLibraryManager implements LibraryManager {
 
-    private List<Book> booksList;
-    private List<Dvd> dvdsList;
-    private List<LibraryReader> readersList;
-    private List<Author> authorsList;
-    private List<Producer> producersList;
-    private List<Actor> actorsList;
-    private List<BookPublisher> publishersList;
+    private List<Book> booksList = new List<Book>(100);
+    private List<Dvd> dvdsList = new List<Dvd>(50);
+    private List<LibraryReader> readersList = new List<>();
+    private List<Author> authorsList = new List<>();
+    private List<Producer> producersList = new List<>();
+    private List<Actor> actorsList = new List<>();
+    private List<BookPublisher> publishersList = new List<>();
 
     // Constructor
     public WestminsterLibraryManager(){
-
+        
     }
+
+    /**
+     * @return the booksList
+     */
+    public List<Book> getBooksList() {
+        return booksList;
+    }
+
+    /**
+     * @param booksList the booksList to set
+     */
+    public void setBooksList(List<Book> booksList) {
+        this.booksList = booksList;
+    }
+
+    /**
+     * @return the dvdsList
+     */
+    public List<Dvd> getDvdsList() {
+        return dvdsList;
+    }
+
+    /**
+     * @param dvdsList the dvdsList to set
+     */
+    public void setDvdsList(List<Dvd> dvdsList) {
+        this.dvdsList = dvdsList;
+    }
+
+
+
 
     public void liveData(){
 

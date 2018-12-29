@@ -24,8 +24,8 @@ public class Dvd extends LibraryItem{
      * @param langAvailable
      * @param subsAvailable
      */
-    public Dvd(String isbn, String title, String sector, DateTime borrowedDate, Date publishedDate, int currentReaderId, int producerID, int actorID, String langAvailable, String subsAvailable){
-        super(isbn,title,sector,borrowedDate,publishedDate,currentReaderId);
+    public Dvd(String isbn, String title, String sector, DateTime borrowedDate, Date publishedDate, int currentReaderId, int producerID, int actorID, String langAvailable, String subsAvailable, boolean isBorrowed){
+        super(isbn,title,sector,borrowedDate,publishedDate,currentReaderId,isBorrowed);
         setActorID(actorID);
         setProducerID(producerID);
         setLangAvailable(langAvailable);

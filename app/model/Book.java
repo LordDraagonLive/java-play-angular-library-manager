@@ -10,8 +10,8 @@ public class Book  extends LibraryItem{
     private int publisherID;
     private int numOfPages;
 
-    public Book(String isbn, String title, String sector, DateTime borrowedDate, Date publishedDate, int currentReaderId, int authorID, int publisherID, int numOfPages ){
-        super(isbn,title,sector,borrowedDate,publishedDate,currentReaderId);
+    public Book(String isbn, String title, String sector, DateTime borrowedDate, Date publishedDate, int currentReaderId, int authorID, int publisherID, int numOfPages, boolean isBorrowed ){
+        super(isbn,title,sector,borrowedDate,publishedDate,currentReaderId, isBorrowed);
         setAuthorID(authorID);
         setPublisherID(publisherID);
         setNumOfPages(numOfPages);
