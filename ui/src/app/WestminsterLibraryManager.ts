@@ -5,6 +5,7 @@ import {ReaderService} from "./reader.service";
 import {LibraryManager} from "./library-manager";
 import { LibraryItemService } from './library-item.service';
 import {DataContainerService} from './data-container.service';
+import {isNullOrUndefined} from "util";
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,18 @@ export class WestminsterLibraryManager implements LibraryManager{
   private _books:BookService[] = new Array<BookService>(100);
   private _dvds:DVDService[] = new Array<DVDService>(50);
   private _readers: ReaderService[] = new Array<ReaderService>();
+  private static initialized:boolean = false;
 
   constructor() {
     this.books = DataContainerService.books;
     this.dvds = DataContainerService.dvds;
     this.readers = DataContainerService.readers;
+
+    if(WestminsterLibraryManager.initialized == false){
+      DataContainerService.initialize();
+      WestminsterLibraryManager.initialized = true;
+    }
+
   }
 
 
@@ -46,14 +54,14 @@ export class WestminsterLibraryManager implements LibraryManager{
     this._readers = value;
   }
 
-  public addBook(type, name, isbn, publicationDate, author, publisher, pages) {
+  public addBook(type:string, name:string, isbn:string, publicationDate:string, author:string, publisher:string, pages:string) {
     let exists = this.isExists(isbn);
 
       if(exists == true){
         alert("Item with ISBN number already exists");
       }
       else{
-        let book:BookService;
+        let book:BookService = new BookService();
         book.setType(type);
         book.setName(name);
         book.setISBN(isbn);
@@ -62,19 +70,19 @@ export class WestminsterLibraryManager implements LibraryManager{
         book.setPublisher(publisher);
         book.setPages(pages);
         this._books.push(book);
+        console.log(book);
         this.updateDataContainer()
       }
   }
 
-  public addDVD(type, name, isbn, publicationDate, languages, subtitles, actors, producers){
+  public addDVD(type:string, name:string, isbn:string, publicationDate:string, languages:string, subtitles:string, actors:string, producers:string){
     let exists = this.isExists(isbn);
 
     if(exists == true){
       alert("Item with ISBN number already exists");
     }
     else{
-      let dvd:DVDService;
-
+      let dvd:DVDService = new DVDService();
       dvd.setName(name);
       dvd.setISBN(isbn);
       dvd.setPublicationDate(publicationDate);
@@ -84,10 +92,11 @@ export class WestminsterLibraryManager implements LibraryManager{
       dvd.setProducer(producers);
       this._dvds.push(dvd);
       this.updateDataContainer();
+      console.log(dvd);
     }
   }
 
-  private isExists(isbn){
+  private isExists(isbn:string){
     let exists = false;
 
     this._books.forEach((book) => {
@@ -107,6 +116,69 @@ export class WestminsterLibraryManager implements LibraryManager{
     )
 
     return exists;
+  }
+
+  public retrieveItem(isbn:string){
+
+   var item:LibraryItemService = new LibraryItemService();
+
+    if(this.isAvailable(isbn) == true){
+
+      this._books.forEach((book) => {
+
+        if(book.getISBN() == isbn){
+
+          if(book.getIsBurrowed()) {
+            item.setISBN(book.getISBN());
+            item.setName(book.getName());
+            item.setType(book.getType());
+            item.setPublicationDate(book.getPublicationDate());
+          }
+        }
+      })
+
+      this._dvds.forEach((dvd) => {
+
+            if(dvd.getISBN() == isbn){
+              item.setISBN(dvd.getISBN());
+              item.setName(dvd.getName());
+              item.setType(dvd.getType());
+              item.setPublicationDate(dvd.getPublicationDate());
+            }
+
+          }
+      )
+    }
+     return item;
+  }
+
+  public isAvailable(isbn:string){
+    var available = false;
+
+    if(this.isExists(isbn) == true){
+
+      this._books.forEach((book) => {
+
+        if(book.getISBN() == isbn){
+
+          if(book.getIsBurrowed() == false) {
+            available = true;
+          }
+        }
+      })
+
+      this._dvds.forEach((dvd) => {
+
+            if(dvd.getISBN() == isbn){
+              if(dvd.getIsBurrowed() == false) {
+                available = true;
+              }
+            }
+
+          }
+      )
+      return available;
+    }
   }
 
   public deleteItem(isbn){
@@ -141,6 +213,48 @@ export class WestminsterLibraryManager implements LibraryManager{
     )
     
 
+  }
+
+  public burrowItem(isbn:string,burrower:string, burrowDate:string){
+
+    var book: BookService =new BookService();
+    var dvd: DVDService = new DVDService();
+
+    if(this.isAvailable(isbn) == true){
+      this._books.forEach((book) => {
+
+        if(book.getISBN() == isbn){
+
+          if(book.getIsBurrowed()) {
+              book.setBurrower(burrower);
+              book.setBurrowedDate(burrowDate);
+              book.setIsBurrowed(true);
+              alert("Item burrowed");
+          }
+        }
+      })
+
+      this._dvds.forEach((dvd) => {
+
+            if(dvd.getISBN() == isbn){
+              dvd.setBurrower(burrower);
+              dvd.setBurrowedDate(burrowDate);
+              dvd.setIsBurrowed(true);
+            }
+
+          }
+      )
+    }
+  }
+
+  public isNull(item:LibraryItemService){
+      if(isNullOrUndefined(item)){
+        console.log("ITEM: " + item);
+        return true;
+      }
+      else{
+        return true;
+      }
   }
 
   private updateDataContainer(){
